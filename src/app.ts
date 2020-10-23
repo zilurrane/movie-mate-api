@@ -10,12 +10,14 @@ import { UserRoutes } from './routes/user.routes';
 
 import { errorCodes } from './shared/constants';
 import { initializeDatabase } from './shared/db-migration';
+import { MovieRoutes } from './routes/movie.routes';
 
 class App {
 
     public app: express.Application;
     public healthCheckRoutes: HealthCheckRoutes = new HealthCheckRoutes();
     public userRoutes: UserRoutes = new UserRoutes();
+    public movieRoutes: MovieRoutes = new MovieRoutes();
 
     public mongoUrl: string = <string>process.env.MONGO_CON_STRING;
 
@@ -27,6 +29,8 @@ class App {
 
         this.app.use('/api/healthcheck', this.getPassportAuthenticatorMiddleware, this.healthCheckRoutes.getAllRoutes());
         this.app.use('/api/users', this.userRoutes.getAllRoutes());
+        this.app.use('/api/movies', this.movieRoutes.getProtectedRoutes());
+        this.app.use('/api/public/movies', this.movieRoutes.getPublicRoutes());
     }
 
     private config(): void {

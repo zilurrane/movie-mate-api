@@ -4,7 +4,7 @@ import { UserModel } from '../models/user.model';
 export class UserController {
 
     public listAllUsers(req: Request, res: Response) {
-        UserModel(req).find({}, (err: any, response: any) => {
+        UserModel().find({}, (err: any, response: any) => {
             if (err) {
                 res.status(500).send(err);
             }
