@@ -6,12 +6,16 @@ import { jwtStrategy } from './shared/jwtStrategy';
 
 
 import { HealthCheckRoutes } from './routes/health-check.routes';
+import { UserRoutes } from './routes/user.routes';
+
 import { errorCodes } from './shared/constants';
 
 class App {
 
     public app: express.Application;
     public healthCheckRoutes: HealthCheckRoutes = new HealthCheckRoutes();
+    public userRoutes: UserRoutes = new UserRoutes();
+
     public mongoUrl: string = <string>process.env.MONGO_CON_STRING;
 
     constructor() {
@@ -21,6 +25,7 @@ class App {
         this.mongoSetup();
 
         this.app.use('/api/healthcheck', this.getPassportAuthenticatorMiddleware, this.healthCheckRoutes.getAllRoutes());
+        this.app.use('/api/users', this.userRoutes.getAllRoutes());
     }
 
     private config(): void {
@@ -35,6 +40,8 @@ class App {
             console.log('--------------------------------------------------------------');
             console.log('MongoDB connected successfully!!!');
             console.log('--------------------------------------------------------------');
+        }).catch(error => {
+            console.log("MongoDB connection failed -", error)
         });
     }
 
