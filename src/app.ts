@@ -29,8 +29,7 @@ class App {
 
         this.app.use('/api/healthcheck', this.getPassportAuthenticatorMiddleware, this.healthCheckRoutes.getAllRoutes());
         this.app.use('/api/users', this.userRoutes.getAllRoutes());
-        this.app.use('/api/movies', this.movieRoutes.getProtectedRoutes());
-        this.app.use('/api/public/movies', this.movieRoutes.getPublicRoutes());
+        this.app.use('/api/movies', this.movieRoutes.getAllRoutes(this.getPassportAuthenticatorMiddleware));
     }
 
     private config(): void {

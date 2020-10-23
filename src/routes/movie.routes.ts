@@ -5,23 +5,15 @@ export class MovieRoutes {
 
     private movieController: MovieController = new MovieController();
 
-    public getProtectedRoutes(): Router {
+    public getAllRoutes(middleware: any): Router {
 
         const routes = Router();
 
         routes.route('/')
-            .post(this.movieController.addMovie)
-
-        return routes;
-    }
-
-    public getPublicRoutes(): Router {
-
-        const routes = Router();
-
-        routes.route('/')
+            .post(middleware, this.movieController.addMovie)
             .get(this.movieController.listAllMovies)
 
         return routes;
     }
+
 }
