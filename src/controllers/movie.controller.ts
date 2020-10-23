@@ -3,9 +3,12 @@ import { MovieModel } from '../models/movie.model';
 
 export class MovieController {
 
-    public async listAllMovies(_req: Request, res: Response) {
+    public async listAllMovies(req: Request, res: Response) {
         try {
-            const response = await MovieModel.find({});
+            const sortKey = <string>req.query['sort-key'] || 'popularity99';
+            const sortOrder = <string>req.query['sort-order'] || 'desc';
+
+            const response = await MovieModel.find({}).sort({ [sortKey]: sortOrder });
             res.status(200).json(response);
         } catch (error) {
             res.status(500).json(error);
