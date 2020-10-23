@@ -1,7 +1,12 @@
 import express from 'express';
 import * as bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import passport from 'passport';
+import { jwtStrategy } from './shared/jwtStrategy';
+
+
 import { HealthCheckRoutes } from './routes/health-check.routes';
+import { errorCodes } from './shared/constants';
 
 class App {
 
@@ -15,12 +20,13 @@ class App {
         this.config();
         this.mongoSetup();
 
-        this.app.use('/api/healthcheck', this.healthCheckRoutes.getAllRoutes());
+        this.app.use('/api/healthcheck', this.getPassportAuthenticatorMiddleware, this.healthCheckRoutes.getAllRoutes());
     }
 
     private config(): void {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
+        passport.use(jwtStrategy);
     }
 
     private mongoSetup(): void {
@@ -30,6 +36,24 @@ class App {
             console.log('MongoDB connected successfully!!!');
             console.log('--------------------------------------------------------------');
         });
+    }
+
+    private getPassportAuthenticatorMiddleware(req: any, res: any, next: any) {
+        return passport.authenticate('jwt', { session: false }, function (err, user) {
+            if (err || !user) {
+                return res.status(401).send({
+                    error: {
+                        code: errorCodes.AUTH_FAILED,
+                        message: "Your session is not valid, you have to login again!",
+                        details: err
+                    }
+                });
+            }
+            else {
+                req.user = user;
+                return next();
+            }
+        })(req, res, next);
     }
 }
 
