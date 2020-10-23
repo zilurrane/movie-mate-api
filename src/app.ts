@@ -9,6 +9,7 @@ import { HealthCheckRoutes } from './routes/health-check.routes';
 import { UserRoutes } from './routes/user.routes';
 
 import { errorCodes } from './shared/constants';
+import { initializeDatabase } from './shared/db-migration';
 
 class App {
 
@@ -40,6 +41,7 @@ class App {
             console.log('--------------------------------------------------------------');
             console.log('MongoDB connected successfully!!!');
             console.log('--------------------------------------------------------------');
+            initializeDatabase(mongoose);
         }).catch(error => {
             console.log("MongoDB connection failed -", error)
         });
