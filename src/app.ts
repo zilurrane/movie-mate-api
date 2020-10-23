@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import passport from 'passport';
@@ -50,7 +50,7 @@ class App {
         });
     }
 
-    private getPassportAuthenticatorMiddleware(req: any, res: any, next: any) {
+    private getPassportAuthenticatorMiddleware(req: Request, res: Response, next: NextFunction) {
         return passport.authenticate('jwt', { session: false }, function (err, user) {
             if (err || !user) {
                 return res.status(401).send({

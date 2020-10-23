@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import { MovieController } from "../controllers/movie.controller";
 
 export class MovieRoutes {
 
     private movieController: MovieController = new MovieController();
 
-    public getAllRoutes(middleware: any): Router {
+    public getAllRoutes(middleware: RequestHandler): Router {
 
         const routes = Router();
 
