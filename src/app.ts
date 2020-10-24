@@ -11,6 +11,7 @@ import { UserRoutes } from './routes/user.routes';
 import { errorCodes } from './shared/constants';
 import { initializeDatabase } from './shared/db-migration';
 import { MovieRoutes } from './routes/movie.routes';
+import corsMiddleware from './shared/cors-middleware';
 
 class App {
 
@@ -35,6 +36,7 @@ class App {
     private config(): void {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(corsMiddleware);
         passport.use(jwtStrategy);
     }
 
