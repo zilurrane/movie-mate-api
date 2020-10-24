@@ -14,6 +14,7 @@ export const MovieSchema = new Schema({
     },
     genre: [{
         type: String,
+        trim: true,
         required: 'Genre is required',
     }],
     imdb_score: {

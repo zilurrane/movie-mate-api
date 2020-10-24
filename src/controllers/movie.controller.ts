@@ -8,12 +8,18 @@ export class MovieController {
             const sortKey = <string>req.query['sort-key'] || 'popularity99';
             const sortOrder = <string>req.query['sort-order'] || 'desc';
             const query = <string>req.query['query'];
+            const genre = <string>req.query['genre'];
 
             let filter = {};
             if (query) {
                 const filterValue = { "$regex": query, "$options": "i" };
                 filter = { $or: [{ name: filterValue }, { director: filterValue }] };
             }
+            if (genre) {
+                const genreList = genre.split(',');
+                filter = { ...filter, genre: { "$all": genreList } };
+            }
+
             const response = await MovieModel.find(filter).sort({ [sortKey]: sortOrder });
             res.status(200).json(response);
         } catch (error) {
