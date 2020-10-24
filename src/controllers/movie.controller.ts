@@ -7,8 +7,14 @@ export class MovieController {
         try {
             const sortKey = <string>req.query['sort-key'] || 'popularity99';
             const sortOrder = <string>req.query['sort-order'] || 'desc';
+            const query = <string>req.query['query'];
 
-            const response = await MovieModel.find({}).sort({ [sortKey]: sortOrder });
+            let filter = {};
+            if (query) {
+                const filterValue = { "$regex": query, "$options": "i" };
+                filter = { $or: [{ name: filterValue }, { director: filterValue }] };
+            }
+            const response = await MovieModel.find(filter).sort({ [sortKey]: sortOrder });
             res.status(200).json(response);
         } catch (error) {
             res.status(500).json(error);
