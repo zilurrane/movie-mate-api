@@ -9,6 +9,8 @@ export class MovieController {
             const sortOrder = <string>req.query['sort-order'] || 'desc';
             const query = <string>req.query['query'];
             const genre = <string>req.query['genre'];
+            const page = Number(req.query['page']) || 0;
+            const limit = Number(req.query['limit']) || 10;
 
             let filter = {};
             if (query) {
@@ -20,8 +22,10 @@ export class MovieController {
                 filter = { ...filter, genre: { "$all": genreList } };
             }
 
-            const response = await MovieModel.find(filter).sort({ [sortKey]: sortOrder });
-            res.status(200).json(response);
+            const data = await MovieModel.find(filter).skip(page*limit).limit(limit).sort({ [sortKey]: sortOrder });
+            const totalCount = await MovieModel.countDocuments(filter);
+
+            res.status(200).json({ totalCount, page, limit, data });
         } catch (error) {
             res.status(500).json(error);
         }
