@@ -15,6 +15,7 @@ export class MovieRoutes {
 
         routes.route('/:id')
             .delete(middleware, this.movieController.deleteMovie)
+            .patch(middleware, this.movieController.updateMovie)
 
         return routes;
     }

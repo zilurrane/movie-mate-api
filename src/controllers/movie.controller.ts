@@ -76,4 +76,39 @@ export class MovieController {
             res.status(500).json({ error: errorResponse });
         }
     }
+
+    public async updateMovie(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            if (!id || !Types.ObjectId.isValid(id)) {
+                res.status(400).json({ error: { message: 'Please pass valid request to update movie.' } });
+                return;
+            }
+
+            const { genre, popularity99, director, imdb_score } = req.body;
+            const updatedFields = {
+                ...(genre && { genre }),
+                ...(popularity99 && { popularity99 }),
+                ...(director && { director }),
+                ...(imdb_score && { imdb_score })
+            }
+
+            const data = await MovieModel.findByIdAndUpdate(id, updatedFields, { new: true });
+
+            if (!data) {
+                const errorResponse: IError = {
+                    message: 'Selected movie not found.'
+                }
+                res.status(404).send({ error: errorResponse });
+            } else {
+                res.status(204).send();
+            }
+
+        } catch (error) {
+            const errorResponse: IError = {
+                message: 'We are unable to process your request, please try again later.'
+            }
+            res.status(500).json({ error: errorResponse });
+        }
+    }
 }
