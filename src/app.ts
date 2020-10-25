@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import morgan from 'morgan';
 import passport from 'passport';
 import { jwtStrategy } from './shared/jwtStrategy';
 
@@ -43,6 +44,9 @@ class App {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use(corsMiddleware);
+        this.app.use(morgan('combined', {
+            skip: function (_req, res) { return res.statusCode < 400 }
+        }));
         passport.use(jwtStrategy);
     }
 

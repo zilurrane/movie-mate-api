@@ -39,7 +39,7 @@ export class MovieController {
 
     public async addMovie(req: Request, res: Response) {
         try {
-            const { genre, popularity99, director, imdb_score, name } = req.body;
+            const { genre, popularity99, director, imdbScore, name } = req.body;
 
             if (!name) {
                 res.status(400).json({ error: { message: 'Movie name is required.' } });
@@ -53,7 +53,7 @@ export class MovieController {
                 res.status(400).json({ error: { message: 'Director name is required.' } });
                 return;
             }
-            if (!imdb_score) {
+            if (!imdbScore) {
                 res.status(400).json({ error: { message: 'IMDB rating is required.' } });
                 return;
             }
@@ -70,7 +70,7 @@ export class MovieController {
                 genre,
                 popularity99,
                 director,
-                imdb_score,
+                imdbScore,
                 name
             });
             const movieRecordResponse = await movieRecordToInsert.save();
@@ -125,7 +125,7 @@ export class MovieController {
                 return;
             }
 
-            const { genre, popularity99, director, imdb_score } = req.body;
+            const { genre, popularity99, director, imdbScore } = req.body;
 
             if (!Array.isArray(genre)) {
                 res.status(400).json({ error: { message: 'Please pass valid genre list to update movie.' } });
@@ -136,7 +136,7 @@ export class MovieController {
                 ...(genre && { genre }),
                 ...(popularity99 && { popularity99 }),
                 ...(director && { director }),
-                ...(imdb_score && { imdb_score })
+                ...(imdbScore && { imdbScore })
             }
 
             const data = await MovieModel.findByIdAndUpdate(id, updatedFields, { new: true });

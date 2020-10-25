@@ -17,8 +17,9 @@ export const MovieSchema = new Schema({
         trim: true,
         required: 'Genre is required',
     }],
-    imdb_score: {
+    imdbScore: {
         type: Number,
+        alias: 'imdb_score',
         required: 'IMDB score is required',
     },
     name: {
