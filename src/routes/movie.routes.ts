@@ -13,6 +13,9 @@ export class MovieRoutes {
             .post(middleware, this.movieController.addMovie)
             .get(this.movieController.listAllMovies)
 
+        routes.route('/:id')
+            .delete(middleware, this.movieController.deleteMovie)
+
         return routes;
     }
 

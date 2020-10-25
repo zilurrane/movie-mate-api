@@ -11,6 +11,7 @@ export class AuthController {
             const { userName, password } = req.body;
             if (!userName || !password) {
                 res.status(400).json({ error: { message: 'Please input your username and password to login.' } });
+                return;
             }
             const user: any = await UserModel.findOne({ userName }).exec();
             if (!user) {
