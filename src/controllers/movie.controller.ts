@@ -38,12 +38,48 @@ export class MovieController {
 
     public async addMovie(req: Request, res: Response) {
         try {
-            const movieRecordToInsert = new MovieModel(req.body);
+            const { genre, popularity99, director, imdb_score, name } = req.body;
+
+            if (!name) {
+                res.status(400).json({ error: { message: 'Movie name is required.' } });
+                return;
+            }
+            if (!popularity99) {
+                res.status(400).json({ error: { message: 'Popularity is required.' } });
+                return;
+            }
+            if (!director) {
+                res.status(400).json({ error: { message: 'Director name is required.' } });
+                return;
+            }
+            if (!imdb_score) {
+                res.status(400).json({ error: { message: 'IMDB rating is required.' } });
+                return;
+            }
+            if (!genre) {
+                res.status(400).json({ error: { message: 'Genre is required.' } });
+                return;
+            }
+            if (!Array.isArray(genre)) {
+                res.status(400).json({ error: { message: 'Pass valid genre list.' } });
+                return;
+            }
+
+            const movieRecordToInsert = new MovieModel({
+                genre,
+                popularity99,
+                director,
+                imdb_score,
+                name
+            });
             const movieRecordResponse = await movieRecordToInsert.save();
-            if (movieRecordResponse && movieRecordResponse.id) {
+            if (movieRecordResponse && movieRecordResponse._id) {
                 res.status(200).json(movieRecordResponse);
             } else {
-                res.status(500).json(movieRecordResponse);
+                const errorResponse: IError = {
+                    message: 'We are unable to process your request, please try again later.'
+                }
+                res.status(500).json({ error: errorResponse });
             }
         } catch (error) {
             const errorResponse: IError = {
