@@ -10,7 +10,7 @@ import { UserRoutes } from './routes/user.routes';
 
 import { errorCodes } from './shared/constants';
 import corsMiddleware from './shared/cors-middleware';
-import { initializeDatabase } from './shared/db-migration';
+import { initializeDatabase } from './shared/db-helper';
 import { MovieRoutes } from './routes/movie.routes';
 import { GenreRoutes } from './routes/genre.routes';
 import { AuthRoutes } from './routes/auth.routes';

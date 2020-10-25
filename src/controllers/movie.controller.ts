@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { Types } from 'mongoose';
 import IError from '../interfaces/error.interface';
 import { MovieModel } from '../models/movie.model';
+import { insertGenreList } from '../shared/db-helper';
 
 export class MovieController {
 
@@ -74,6 +75,9 @@ export class MovieController {
             });
             const movieRecordResponse = await movieRecordToInsert.save();
             if (movieRecordResponse && movieRecordResponse._id) {
+                if (genre.length !== 0) {
+                    await insertGenreList(genre);
+                }
                 res.status(200).json(movieRecordResponse);
             } else {
                 const errorResponse: IError = {
@@ -143,6 +147,9 @@ export class MovieController {
                 }
                 res.status(404).send({ error: errorResponse });
             } else {
+                if (genre.length !== 0) {
+                    await insertGenreList(genre);
+                }
                 res.status(204).send();
             }
 

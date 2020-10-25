@@ -23,3 +23,12 @@ export const initializeDatabase = async (mongoose: Mongoose) => {
         console.log("Error ocurred during DB initialization - ", error);
     }
 }
+
+export const insertGenreList = async (genreList: string[]) => {
+    const genreExistPromises = genreList.map(genre => GenreModel.exists({ name: genre }));
+    const genreExists = await Promise.all(genreExistPromises);
+    const genreListToInsert = genreList.filter((_genre: string, index: number) => genreExists[index] !== true).map(genre => ({ name: genre }));
+    if (genreListToInsert && genreListToInsert.length !== 0) {
+        await GenreModel.insertMany(genreListToInsert);
+    }
+}

@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import IGenre from '../interfaces/genre.interface';
 
 const Schema = mongoose.Schema;
 
@@ -10,4 +11,4 @@ export const GenreSchema = new Schema({
     }
 });
 
-export const GenreModel: any = mongoose.model('Genre', GenreSchema);
+export const GenreModel: any = mongoose.model<IGenre>('Genre', GenreSchema);
