@@ -31,13 +31,13 @@ export class AuthController {
                             token,
                         })
                     } else {
-                        return res.status(401).json({ message: 'Username or Password is incorrect.' })
+                        return res.status(401).json({ error: { message: 'Username or Password is incorrect.' } });
                     }
                 })
             }
         } catch (error) {
             const errorResponse: IError = {
-                message: 'We are unable to process your request, please try again later',
+                message: 'We are unable to process your request, please try again later.',
                 details: error,
             }
             res.status(500).json({ error: errorResponse });
