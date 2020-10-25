@@ -1,7 +1,6 @@
 import * as mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
+import IUser from '../interfaces/user.interface';
 
 const Schema = mongoose.Schema;
 
@@ -55,4 +54,4 @@ UserSchema.methods.comparePassword = function (pw: string, cb: any) {
     })
 };
 
-export const UserModel: any = mongoose.model('User', UserSchema);
+export const UserModel = mongoose.model<IUser>('User', UserSchema);
