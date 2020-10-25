@@ -1,3 +1,5 @@
+import { Secret } from "jsonwebtoken";
+
 export const errorCodes = {
     INSERT_FAILED: 9001,
     AUTH_FAILED: 401

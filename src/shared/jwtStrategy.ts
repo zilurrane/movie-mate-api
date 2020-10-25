@@ -1,4 +1,4 @@
-import { Strategy, ExtractJwt } from 'passport-jwt'
+import { Strategy, ExtractJwt, StrategyOptions } from 'passport-jwt'
 import { UserModel } from '../models/user.model';
 import { jwtSecretKey } from './constants';
 

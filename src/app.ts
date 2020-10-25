@@ -13,6 +13,7 @@ import corsMiddleware from './shared/cors-middleware';
 import { initializeDatabase } from './shared/db-migration';
 import { MovieRoutes } from './routes/movie.routes';
 import { GenreRoutes } from './routes/genre.routes';
+import { AuthRoutes } from './routes/auth.routes';
 
 class App {
 
@@ -21,6 +22,7 @@ class App {
     public userRoutes: UserRoutes = new UserRoutes();
     public movieRoutes: MovieRoutes = new MovieRoutes();
     public genreRoutes: GenreRoutes = new GenreRoutes();
+    public authRoutes: AuthRoutes = new AuthRoutes();
 
     public mongoUrl: string = <string>process.env.MONGO_CON_STRING;
 
@@ -34,6 +36,7 @@ class App {
         this.app.use('/api/users', this.userRoutes.getAllRoutes());
         this.app.use('/api/movies', this.movieRoutes.getAllRoutes(this.getPassportAuthenticatorMiddleware));
         this.app.use('/api/genres', this.genreRoutes.getAllRoutes(this.getPassportAuthenticatorMiddleware));
+        this.app.use('/api/auth', this.authRoutes.getAllRoutes());
     }
 
     private config(): void {
