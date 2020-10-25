@@ -86,6 +86,12 @@ export class MovieController {
             }
 
             const { genre, popularity99, director, imdb_score } = req.body;
+
+            if (!Array.isArray(genre)) {
+                res.status(400).json({ error: { message: 'Please pass valid genre list to update movie.' } });
+                return;
+            }
+
             const updatedFields = {
                 ...(genre && { genre }),
                 ...(popularity99 && { popularity99 }),
