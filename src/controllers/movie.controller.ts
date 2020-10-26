@@ -25,7 +25,7 @@ export class MovieController {
                 filter = { ...filter, genre: { "$all": genreList } };
             }
 
-            const data = await MovieModel.find(filter).skip(page * limit).limit(limit).sort({ [sortKey]: sortOrder });
+            const data = await MovieModel.find(filter).populate('modifiedBy', 'name').skip(page * limit).limit(limit).sort({ [sortKey]: sortOrder });
             const totalCount = await MovieModel.countDocuments(filter);
 
             res.status(200).json({ totalCount, page, limit, data });
@@ -66,12 +66,15 @@ export class MovieController {
                 return;
             }
 
+            const loggedInUserInfo = <any>req.user;
+
             const movieRecordToInsert = new MovieModel({
                 genre,
                 popularity99,
                 director,
                 imdbScore,
-                name
+                name,
+                modifiedBy: loggedInUserInfo['_id']
             });
             const movieRecordResponse = await movieRecordToInsert.save();
             if (movieRecordResponse && movieRecordResponse._id) {
@@ -132,11 +135,14 @@ export class MovieController {
                 return;
             }
 
+            const loggedInUserInfo = <any>req.user;
+
             const updatedFields = {
                 ...(genre && { genre }),
                 ...(popularity99 && { popularity99 }),
                 ...(director && { director }),
-                ...(imdbScore && { imdbScore })
+                ...(imdbScore && { imdbScore }),
+                modifiedBy: loggedInUserInfo['_id']
             }
 
             const data = await MovieModel.findByIdAndUpdate(id, updatedFields, { new: true });

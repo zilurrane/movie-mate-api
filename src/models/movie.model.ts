@@ -26,6 +26,10 @@ export const MovieSchema = new Schema({
         type: String,
         required: 'Name is required',
     },
+    modifiedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     createdDate: {
         type: Date,
         default: Date.now
