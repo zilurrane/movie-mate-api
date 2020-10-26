@@ -1,4 +1,4 @@
-# movie-mate-api
+# MovieMateAPI
  API repository for MovieMate project
 
 ### API documentation:
